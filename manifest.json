@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Auto Next Video",
+    "name": "GFG playnext",
     "version": "1.0",
-    "description": "Automatically plays the next video on a website.",
+    "description": "Automatically plays the next video on a GFG website.",
     "permissions": ["activeTab"],
     "action": {
       "default_popup": "popup.html"
