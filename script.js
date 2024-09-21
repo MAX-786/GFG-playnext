@@ -8,43 +8,34 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 let videoPlayer;
 let intervalId;
+let currentItemIndex = 0; // Keep track of the current video index
 
 function startVideo() {
   videoPlayer = document.querySelector('video.vjs-tech');
   videoPlayer.playbackRate = 2;
 
-  intervalId = setInterval(() => {
-    if (videoPlayer.ended) {
-      getNextVideo();
-    }
-  }, 1000); // Check for video end every 1000ms (adjust as needed)
+  videoPlayer.addEventListener('ended', handleVideoEnded);
+  getNextVideo();
 }
 
 function stopVideo() {
   clearInterval(intervalId);
+  videoPlayer.removeEventListener('ended', handleVideoEnded);
 }
 
 function getNextVideo() {
+  const videos = document.querySelectorAll('.sidebar_item__khyNp');
 
-  const b = document.querySelectorAll('.sidebar_item__khyNp');
-  let found = 0;
-  let curr = null;
-
-  for (const i of b) {
-    if (found === 1) {
-      curr = i;
-      found = 0;
-      break;
-    }
-
-    if (i.classList.contains('active')) {
-      found = 1;
-    }
-  }
-
-  if (curr) {
-    curr.click();
-  } else {
+  if (currentItemIndex >= videos.length) {
     console.log('No more videos found');
+    return;
   }
+
+  const currentVideo = videos[currentItemIndex];
+  currentVideo.click();
+  currentItemIndex++;
+}
+
+function handleVideoEnded() {
+  getNextVideo();
 }
