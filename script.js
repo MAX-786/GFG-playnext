@@ -10,11 +10,7 @@ let videoPlayer;
 let intervalId;
 
 function startVideo() {
-  const currentVideo = document.querySelector('.sidebar_item__khyNp.active');
-  const nextVideo = currentVideo.nextElementSibling.querySelector('.sidebar_item__khyNp');
   videoPlayer = document.querySelector('video.vjs-tech');
-
-  videoPlayer.play();
   videoPlayer.playbackRate = 2;
 
   intervalId = setInterval(() => {
@@ -29,13 +25,26 @@ function stopVideo() {
 }
 
 function getNextVideo() {
-  const currentVideo = document.querySelector('.sidebar_item__khyNp.active');
-  const nextVideo = currentVideo.nextElementSibling.querySelector('.sidebar_item__khyNp');
 
-  if (nextVideo) {
-    browser.tabs.update({ url: nextVideo.href });
+  const b = document.querySelectorAll('.sidebar_item__khyNp');
+  let found = 0;
+  let curr = null;
+
+  for (const i of b) {
+    if (found === 1) {
+      curr = i;
+      found = 0;
+      break;
+    }
+
+    if (i.classList.contains('active')) {
+      found = 1;
+    }
+  }
+
+  if (curr) {
+    curr.click();
   } else {
-    // Handle the case where there's no next video (e.g., show a message)
     console.log('No more videos found');
   }
 }
